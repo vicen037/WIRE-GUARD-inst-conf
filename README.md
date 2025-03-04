@@ -87,56 +87,20 @@ WireGuard es una moderna y rápida solución VPN que utiliza criptografía de ú
    Si tienes un firewall activo, permite el tráfico UDP en el puerto 51820:
 
    ```bash
-   sudo ufw allow 51820/udp
-   sudo ufw enable
+   sudo ./automatizacion_firewall.sh
    ```
 
 ---
 
 ## 3. Configuración del Cliente (Ejemplo: Windows)
 
-1. **Generar las claves del cliente:**
+1. **Ejecutar archivo de automatizacion para crear claves y configuracion de cada usuario:**
 
-   Al igual que con el servidor, cada cliente debe generar su par de claves (privada y pública):
-
+   
    ```bash
-   wg genkey | tee client_private.key | wg pubkey > client_public.key
+   sudo ./crear_claves_user_conf.sh
    ```
 
-2. **Agregar el cliente en el servidor:**
-
-   Abre el archivo `wg0.conf` en el servidor y agrega la configuración del cliente:
-
-   ```bash
-   sudo nano /etc/wireguard/wg0.conf
-   ```
-
-   Ejemplo de configuración del cliente en el servidor:
-
-   ```
-   [Peer]
-   PublicKey = <clave_publica_del_cliente>
-   AllowedIPs = 10.8.0.2/32
-   ```
-
-3. **Crear el archivo de configuración para el cliente:**
-
-   En el cliente, crea un archivo de configuración con el siguiente formato:
-
-   ```
-   [Interface]
-   PrivateKey = <clave_privada_del_cliente>
-   Address = 10.8.0.2/24
-   DNS = 8.8.8.8
-
-   [Peer]
-   PublicKey = <clave_publica_del_servidor>
-   Endpoint = <IP_o_DDNS_del_servidor>:51820
-   AllowedIPs = 0.0.0.0/0
-   PersistentKeepalive = 25
-   ```
-
-   Reemplaza `<clave_privada_del_cliente>`, `<clave_publica_del_servidor>`, y `<IP_o_DDNS_del_servidor>` con los valores correspondientes.
 
 4. **Conectar el cliente a la VPN:**
 
